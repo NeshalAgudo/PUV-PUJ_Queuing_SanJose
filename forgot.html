@@ -45,7 +45,6 @@
             padding: 20px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             backdrop-filter: blur(15px); /* Blur effect */
-           
             border: 1px solid rgba(255, 255, 255, 0.355);
         }
 
@@ -85,6 +84,15 @@
         .btn-primary:hover {
             background: rgba(255, 255, 255, 0.5);
         }
+
+        /* Error message style */
+        .error-message {
+            color: red;
+            font-size: 14px;
+            font-weight: bold;
+            margin-top: 10px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -97,21 +105,41 @@
                 <div class="card">
                     <div class="card-header">Admin Forgot Password</div>
                     <div class="card-body">
-                    
-                        
-                      
-                        <form action="{{ route('admin.send.verification.code') }}" method="POST">
-                           
+                        <form id="forgot-password-form">
                             <div class="form-group">
                                 <label for="email">Email</label>
                                 <input type="email" name="email" id="email" class="form-control" required placeholder="Enter your email">
                             </div>
                             <button type="submit" class="btn btn-primary btn-block">Send Verification Code</button>
                         </form>
+                        <!-- Error message display -->
+                        <div id="error-message" class="error-message"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("forgot-password-form");
+            const emailInput = document.getElementById("email");
+            const errorMessage = document.getElementById("error-message");
+
+            form.addEventListener("submit", function (event) {
+                event.preventDefault(); // Prevent actual form submission
+                
+                const email = emailInput.value.trim();
+                const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+                // If email is valid, show incorrect email message
+                if (emailPattern.test(email)) {
+                    errorMessage.textContent = "Incorrect email. Please try again.";
+                } else {
+                    errorMessage.textContent = "Please enter a valid email address.";
+                }
+            });
+        });
+    </script>
 </body>
 </html>
